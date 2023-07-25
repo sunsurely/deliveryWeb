@@ -1,0 +1,46 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="order_scroll_container">
+    <div id="top">
+        <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+                style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+        <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;" onclick="window.history.back()" />
+    </div>
+    <div>
+        <div id="titleDiv">
+            <p style="font-size: 30px; font-weight: bold;">주문 확인</p>
+        </div>
+    </div>
+    <div>
+        {% if carts.cart.length === 0 %}
+        <div style="text-align: center;">
+            <p style="font-size: large;">텅~</p>
+        </div>
+    </div>
+</div>
+{% elif carts.cart.length !== 0 %}
+<div id="titleDiv">
+    <p style="font-size: 20px; font-weight: bold;">{{carts.cart[0].store}}</p>
+</div>
+{% for cart in carts.cart %}
+<div id="menus">
+    <p style="float: right;">{{cart.ea}}개 &nbsp</p>
+    <p style="white-space : nowrap; overflow : hidden; text-overflow : ellipsis;">{{cart.menu}}</p>
+    <hr style="border: solid 1px rgb(202, 25, 84);">
+</div>
+{% endfor %}
+<div id="menus" style="margin-top: 60px; padding-bottom: 300px;">
+    <p style="float: right; font-weight: bold;">{{carts.price[0].price}}원 &nbsp</p>
+    <p style="font-weight: bold;">결제 예정금액:&nbsp;</p>
+    <hr style="border: solid 1px rgb(25, 202, 105);">
+</div>
+
+</div>
+</div>
+<nav id="nav5">
+    <a href="/userPoint?price={{carts.price[0].price}}">
+        <p style="font-size: 30px; font-weight: bold; margin-top: 10px; margin-bottom: 10px;">주문 하러 가기
+        </p>
+    </a>
+</nav>
+{% endif %}
+{% endblock %}

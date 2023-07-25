@@ -1,0 +1,61 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="basket">
+  <a href="/usercarts" id="count_circle">!</a>
+</div>
+<div class="scroll_container">
+  <div id="top">
+    <img src="/images/back.png" style="width:20px; height:20px;" onclick="window.history.back()" />
+  </div>
+  <div id="main_image"></div>
+  <div id="store_header">
+    <h2>{{store.store.name}}</h2>
+    <span>
+      <img id="rating_star" src="/images/Untitled-2.png" /><span>{{store.store.rating}}</span></span>
+    <div id="social">
+      <a><img id="phone" src="/images/전화기.png" alt="icon" /></a>
+      {% if isDibs ===true %}
+      <a class="heart">
+        <img id="heart" src="/images/favorite2_FILL0_wght400_GRAD0_opsz48.png" /></a>
+      {%elif isDibs ===false %}
+      <a class="heart">
+        <img id="heart" src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png" /></a>
+      {% endif %}
+      <a><img id="share" src="/images/공유.png" alt="icon" /></a>
+    </div>
+  </div>
+  <div id="store_content">
+    <div id="store_info">
+      <div><a href="/stores/{{store.store.store_id}}/review">리뷰 </a></div>
+      <div><a>원산지</a></div>
+    </div>
+    <div id="menu_all">
+      {% for menu in store.store.menu %}
+      <a href="/stores/menusDetail?menu_id={{menu.menu_id}}" id="{{menu.menu_id}}" class="menu_box">
+        <div class="menu_desc">
+          <h2>{{menu.name}}</h2>
+          <p class="desc">{{menu.desc}}</p>
+          <p class="price">{{menu.price}}원</p>
+        </div>
+        <img src="/{{menu.img_url}}" alt="메뉴사진" />
+      </a>
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- <nav id="nav3">
+  <a href="/main"><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/text_snippet_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/person_FILL0_wght400_GRAD0_opsz48.png" /></a>
+</nav> -->
+
+{% endblock %} {% block script %}
+<script>
+  $('.heart').click(() => {
+    axios.post('/dibs?store_id={{store.store.store_id}}').then(() => {
+      window.location.reload();
+    });
+  });
+</script>
+{%endblock%}

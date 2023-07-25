@@ -1,0 +1,221 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="basket">
+  <a href="/usercarts" id="count_circle">!</a>
+</div>
+
+{% if currentAddr === null %}
+<div id="address">로그인이 필요합니다.</div>
+{% elif currentAddr !== null %}
+<div id="address">{{currentAddr}}</div>
+{% endif %}
+
+<header>
+  <img class="banner1" src="/images/banner.png" alt="광고 배너" />
+  <img class="banner2" src="/images/banner.png" alt="광고 배너" />
+  <img class="banner3" src="/images/banner.png" alt="광고 배너" />
+</header>
+<form id="searchFrom" action="/keyword" method="get">
+  <input
+    class="search"
+    type="text"
+    placeholder="키워드로 검색하세요! ex)버거"
+    name="keyword"
+  />
+  <span
+    class="material-symbols-sharp lens"
+    style="margin-top: 5px; margin-right: 1px"
+    onclick="document.forms[0].submit()"
+    >search</span
+  >
+</form>
+<div id="offline">
+  <img src="/images/띵동마트.png" />
+  <img src="/images/편의점.png" />
+  <img src="/images/포장.png" />
+  <img src="/images/선물하기.png" />
+</div>
+<div id="food_category">
+  <a href="/stores?category_id=1"><img src="/images/total.png" /></a>
+  <a href="/stores?category_id=2"><img src="/images/chi.png" /></a>
+  <a href="/stores?category_id=3"> <img src="/images/버거.png" /></a>
+  <a href="/stores?category_id=4"> <img src="/images/한식.png" /></a>
+  <a href="/stores?category_id=5"> <img src="/images/일식.png" /></a>
+  <a href="/stores?category_id=6"><img src="/images/족발.png" /></a>
+  <a href="/stores?category_id=7"><img src="/images/고기.png" /></a>
+  <a href="/stores?category_id=8"><img src="/images/분식.png" /></a>
+  <a href="/stores?category_id=9"><img src="/images/샐러드.png" /></a>
+  <a href="/stores?category_id=10"> <img src="/images/일식.png" /></a>
+  <a href="/stores?category_id=11"><img src="/images/죽.png" /></a>
+  <a href="/stores?category_id=12"><img src="/images/중국집.png" /></a>
+</div>
+<nav id="nav">
+  <a href="/orderCheck"
+    ><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+  <a href="/myDibs"
+    ><img src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+  <a href="/userOrders"
+    ><img src="/images/text_snippet_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+  <a href="/user"
+    ><img id="profile" src="/images/person_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+</nav>
+<div id="address_modal">
+  <div id="modal_scroll">
+    <div id="modal_up">
+      <h2>[ 주소 설정 ]</h2>
+      <div><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png" /></div>
+      <div class="now_address">{{currentAddr}}</div>
+      <input id="address_input" type="text" />
+      <div class="address_reg">등록</div>
+      {% if addresses ===null %}
+      <div>주소를 입력하세요</div>
+      {%endif%} {% for address in addresses %}
+      <div class="addresses" id="{{address.address_id}}">
+        {{address.address}}
+      </div>
+      <button id="{{address.address_id}}" class="delete_addr">x</button>
+      <hr />
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block script %}
+<script>
+  axios
+    .get('/addressOne')
+    .then(function (response) {
+      setInterval(slideRight, 3000);
+      const modal = $('#address_modal');
+      $('header').click(() => {
+        modal.animate({ top: '100%' }, 1000);
+      });
+      $('#address').click(() => {
+        modal.css('display', 'block');
+        modal.animate({ top: '25%' }, 1000);
+      });
+
+      $('#address_modal .change_button').click((event) => {
+        location.href = '/';
+      });
+    })
+    .catch((err) => {
+      $(document).on('click', '#address', async function () {
+        await axios({
+          method: 'GET',
+          url: '/auth/isLogin',
+        })
+          .then((response) => {
+            const isLoggedIn = response.data.isLoggedIn;
+            const status = response.data.status;
+
+            if (!isLoggedIn) {
+              window.location.href = '/signin';
+            }
+
+            if (status === 'admin') {
+              window.location.href = '/store_create';
+            }
+          })
+          .catch((response) => {
+            alert('통신 오류');
+            console.log(response);
+          });
+      });
+    });
+
+  const imgs = $('header > img');
+  let currentIndex = 0;
+
+  const slideRight = function () {
+    currentIndex = (currentIndex + 1) % imgs.length;
+    updateTransform();
+  };
+
+  const slideLeft = function () {
+    currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
+    updateTransform();
+  };
+
+  const updateTransform = function () {
+    const offset = -currentIndex * 120;
+    imgs.each(function (index) {
+      const translateX = offset + index * 120;
+      $(this).css('transform', `translateX(${translateX}%)`);
+    });
+  };
+
+  $(document).on('click', '#profile', async function () {
+    await axios({
+      method: 'GET',
+      url: '/auth/isLogin',
+    })
+      .then(async (response) => {
+        const isLoggedIn = response.data.isLoggedIn;
+        const status = response.data.status;
+
+        if (!isLoggedIn) {
+          window.location.href = '/signin';
+        }
+
+        const storeId = response.data.storeId;
+
+        if (status === 'admin' && !storeId.store_id) {
+          window.location.href = '/store_create';
+        }
+        if (status === 'admin' && storeId.store_id) {
+          window.location.href = '/getStoreIdToPost';
+        }
+      })
+      .catch((response) => {
+        alert('통신 오류');
+        console.log(response);
+      });
+  });
+
+  $('.address_reg').click(() => {
+    const address = $('#address_input').val();
+    axios
+      .post('http://localhost:3001/addresses', { address })
+      .then(() => {
+        alert('주소가 등록되었습니다.');
+        location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+  $('.addresses').each((idx, address) => {
+    $(address).click(() => {
+      const address_id = $(address).attr('id');
+      axios
+        .put(`http://localhost:3001/currentAddresses/${address_id}`)
+        .then(() => {
+          location.reload();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  });
+
+  $('.delete_addr').each((idx, addr) => {
+    $(addr).click(async () => {
+      const address_id = $(addr).attr('id');
+
+      axios
+        .delete(`http://localhost:3001/addresses/${address_id}`)
+        .then(() => {
+          alert('주소를 삭제했습니다.');
+          location.reload();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
+  });
+</script>
+{% endblock %}

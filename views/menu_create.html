@@ -1,0 +1,35 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="store">
+  <r id="menudesc"><label for="name">메뉴이름</label>
+  <input type="text" id="storeinput" class="menuName" placeholder="menu name" /></r>
+  <r id="menudesc"><label for="desc">메뉴설명</label>
+  <input type="text" id="storeinput" class="menuDesc" placeholder="add information" /></r>
+  <r id="menudesc"><label for="price">메뉴가격</label>
+  <input type="text" id="storeinput" class="menuPrice" placeholder="price" /></r>
+  <r id="menudesc"><label for="img_url">메뉴사진</label>
+  <input type="file" id="img-url" name="img_url" class="menuImg" placeholder="이미지넣을 부분" /></r>
+      <button class="menuCreateBtn">등록하기</button>
+  <!-- <div class="white-space"></div> -->
+</div>
+{%endblock%} {% block script %}
+<script>
+  const menuCreateBtn = document.querySelector('.menuCreateBtn')
+
+  menuCreateBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const menuName = $('.menuName').val();
+    const menuDesc = $('.menuDesc').val();
+    const menuPrice = $('.menuPrice').val();
+    const menuImg = document.querySelector('#img-url').files[0];
+
+    const formdata = new FormData();
+    formdata.append('name',menuName);
+    formdata.append('desc',menuDesc);
+    formdata.append('price',menuPrice);
+    formdata.append('img_url',menuImg);
+
+    await axios.post('/stores/{{store_id}}/menu', formdata)
+    .then((res) => {alert('등록완료'); window.location.href = '/getStoreIdToPost'})
+  })
+</script>
+{%endblock%}

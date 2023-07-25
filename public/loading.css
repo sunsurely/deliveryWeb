@@ -1,0 +1,41 @@
+#loading {
+  width: 200px;
+  text-align: center;
+  margin: 250px auto;
+}
+
+#loading p {
+  font-weight: bold;
+  animation-duration: 3s;
+  animation-name: animation1;
+}
+
+#loading h2 {
+  font-size: 25px;
+  font-weight: bold;
+  /* margin-top: 5px;
+  margin-bottom: 50px; */
+  color: red;
+  text-shadow: 0 2px 2px black;
+  animation-duration: 4s;
+  animation-name: animation2;
+}
+
+@keyframes animation1 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+@keyframes animation2 {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

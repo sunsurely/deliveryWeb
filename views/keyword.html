@@ -1,0 +1,29 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="scroll_container2">
+    <div>
+        <div id="top">
+            <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+                    style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+            <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;"
+                onclick="window.history.back()" />
+        </div>
+        <div id="titleDiv" style="margin-top: 100px;">
+            <p style="font-size: 30px; font-weight: bold;">키워드 검색 결과</p>
+        </div>
+        <div id="store_category" style="margin-top: 50px;">
+            {% for store in stores %}
+            <div class="store_box">
+                <a href="/stores/detail?store_id={{store.store_id}}"><img src="{{ store.img_url }}" alt="음식점 이미지" /></a>
+                <a href="/stores/detail?store_id={{store.store_id}}">
+                    <p>{{store.name}}</p>
+                    <div class="rating">
+                        <img src="/images/Untitled-2.png" /><span>{{store.rating}}</span>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

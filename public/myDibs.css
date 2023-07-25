@@ -1,0 +1,22 @@
+#dibs-list {
+  margin-top: 100px;
+  margin-bottom: 20px;
+}
+
+.dibs-box {
+  margin-left: 25px;
+  margin-top: 20px;
+  width: 340px;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+#dibs-title {
+  /* margin-top: 500px; */
+  margin: 70px auto 0 auto;
+}
+
+#none_dibs {
+  margin: 200px 100px 0 auto;
+  padding-left: 120px;
+}

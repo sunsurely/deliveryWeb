@@ -1,0 +1,65 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="scroll_container2">
+  <div>
+    <div id="top">
+      <a href="/main"
+        ><img
+          id="home"
+          src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+          style="width: 30px; height: 30px; float: right; margin-left: 250px"
+      /></a>
+      <img
+        src="/images/back.png"
+        style="width: 20px; height: 20px; margin-top: 5px"
+        onclick="window.history.back()"
+      />
+    </div>
+    <div id="titleDiv">
+      <p style="font-size: 30px; font-weight: bold">찜</p>
+    </div>
+    {% if myDibs.length === 0 %}
+    <p id="none_dibs">찜이 없습니다.</p>
+    {% endif %}
+    <div style="margin-top: 50px">
+      {% for dibs in myDibs %}
+      <div class="dibs-box">
+        <a href="/stores/detail?store_id={{dibs.store_id}}"
+          ><img src="{{dibs.img_url}}" alt="음식점 이미지"
+        /></a>
+        <a href="/stores/detail?store_id={{dibs.store_id}}">
+          <p>{{dibs.name}}</p>
+          <div class="rating">
+            <img src="/images/Untitled-2.png" /><span>{{dibs.rating}}</span>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).on('click', '#profile', async function () {
+    await axios({
+      method: 'GET',
+      url: '/auth/isLogin',
+    })
+      .then((response) => {
+        const isLoggedIn = response.data.isLoggedIn;
+        const status = response.data.status;
+
+        if (!isLoggedIn) {
+          window.location.href = '/signin';
+        }
+
+        if (status === 'admin') {
+          window.location.href = '/store_create';
+        }
+      })
+      .catch((response) => {
+        alert('통신 오류');
+        console.log(response);
+      });
+  });
+</script>
+{% endblock %}

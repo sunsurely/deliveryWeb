@@ -1,0 +1,38 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="top">
+  <a href="/main"
+    ><img
+      id="home"
+      src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+      style="width: 30px; height: 30px; float: right; margin-left: 250px"
+  /></a>
+  <img
+    src="/images/back.png"
+    style="width: 20px; height: 20px; margin-top: 5px"
+    onclick="window.history.back()"
+  />
+</div>
+<h3 id="store_reviews_h3">리뷰</h3>
+{% if reviews.length === 0 %}
+<p id="none_reviews">리뷰가 없습니다.</p>
+{% endif %}
+<div id="dibs-list">
+  {% for review in reviews %}
+  <div class="dibs-box">
+    {% if review.img_url !== 'null' %}
+    <img
+      src="/{{review.img_url}}"
+      alt="음식점 이미지"
+      width="100px"
+      height="70px"
+    /><br />
+    {% endif %}
+    <div class="rating">
+      <img src="/images/Untitled-2.png" /><span>{{review.rating}}</span>
+    </div>
+    <br />
+    <p>{{review.review}}</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

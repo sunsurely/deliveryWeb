@@ -1,0 +1,61 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="review-box">
+  <div id="review-content">
+    <form>
+      <select id="rating" name="rating">
+        <option value="0">별점</option>
+        <option value="1">⭐</option>
+        <option value="2">⭐⭐</option>
+        <option value="3">⭐⭐⭐</option>
+        <option value="4">⭐⭐⭐⭐</option>
+        <option value="5">⭐⭐⭐⭐⭐</option></select
+      ><br />
+      <textarea
+        name="review"
+        id="review"
+        cols="30"
+        rows="10"
+        placeholder="리뷰를 남겨주세요."
+      ></textarea>
+      <input type="file" id="img-url" name="img_url" /><br />
+      <button type="submit" id="btn">리뷰 등록</button>
+    </form>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).on('click', '#btn', async function (e) {
+    e.preventDefault();
+
+    const url = new URL(location.href);
+    const store_id = url.searchParams.get('store_id');
+    const order_id = url.searchParams.get('order_id');
+
+    const rating = $('#rating').val();
+    const review = $('#review').val();
+    const img_url = document.querySelector('#img-url').files[0];
+
+    // console.log(document.querySelector('#img-url'));
+    // console.log($('#img-url'));
+
+    const formData = new FormData();
+    formData.append('rating', rating);
+    formData.append('review', review);
+    formData.append('img_url', img_url);
+
+    await axios
+      .post(`/stores/${store_id}/review/${order_id}`, formData)
+      .then((response) => {
+        alert(response.data.message);
+
+        window.history.back();
+      })
+      .catch((response) => {
+        console.log(response);
+        alert(response.response.data.errorMessage);
+
+        // window.history.back();
+      });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'layout.html' %} {% block content %}
+
+<div id="scroll_container2">
+  <div id="choice_wrap2">
+    <div id="top">
+      <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+          style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+      <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;" onclick="window.history.back()" />
+    </div>
+    <div id="titleDiv">
+      <p style="font-size: 30px; font-weight: bold;">장바구니</p>
+    </div>
+    {%for cart in carts%}
+    <div class="{{cart.cart_id}}" id="menu_wrap" style="margin-top: 10px;">
+      <p id="menu_detail_title">{{cart.menu}}</p>
+      <p id="menu_detail_price">{{cart.price}}</p>
+      <p id="won">원</p>
+
+      <div id="menu_detail_ea">
+        <p>수량</p>
+        <button class="{{cart.cart_id}}" id="sub" onclick="sub('{{cart.cart_id}}')">-</button>
+        <p id="{{cart.cart_id}}" style="margin-left: 5px;">{{cart.ea}}</p>
+        <button class="{{cart.cart_id}}" id="add" onclick="add('{{cart.cart_id}}')">+</button>
+      </div>
+      <hr />
+    </div>
+    {%endfor%}
+
+    <div id="ea_info">
+      <p>총 주문금액</p>
+      <span id="total_price">{{total.price}}원</span>
+    </div>
+    <a href="/orderCheck" id="botton_bottom"><button id="order_complet">주문하기</button></a>
+  </div>
+</div>
+
+{%endblock%} {%block script%}
+<script>
+  let ea;
+  function sub(cart_id) {
+    ea = $(`#${cart_id}`).text();
+    ea = parseInt(ea) - 1;
+    axios.put(`/carts?cart_id=${cart_id}&ea=${ea}`).then(() => {
+      window.location.reload();
+    })
+  }
+
+  function add(cart_id) {
+    ea = $(`#${cart_id}`).text()
+    ea = parseInt(ea) + 1;
+    axios.put(`/carts?cart_id=${cart_id}&ea=${ea}`).then(() => {
+      window.location.reload();
+    })
+  }
+
+</script>
+{% endblock %}

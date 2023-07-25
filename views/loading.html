@@ -1,0 +1,12 @@
+{% extends 'layout.html' %} {%block content %}
+<div id="loading" style="background: red;">
+  <p>배달의 혁신</p>
+  <h2>띵동</h2>
+</div>
+{%endblock%} {% block script %}
+<script>
+  setTimeout(() => {
+    window.location.href = '/main';
+  }, 4000);
+</script>
+{%endblock%}

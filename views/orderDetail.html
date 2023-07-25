@@ -1,0 +1,109 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+  <div id="top">
+    <a href="/main"
+      ><img
+        id="home"
+        src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+        style="width: 30px; height: 30px; float: right; margin-left: 250px"
+    /></a>
+    <img
+      src="/images/back.png"
+      style="width: 20px; height: 20px; margin-top: 5px"
+      onclick="window.history.back()"
+    />
+  </div>
+  <div>
+    <div id="titleDiv">
+      <p style="font-size: 30px; font-weight: bold">주문 내역 상세</p>
+    </div>
+  </div>
+  <div style="margin-top: 50px">
+    <div id="orderAddress">
+      <p style="font-size: larger; font-weight: bold; margin-bottom: 10px">
+        주소
+      </p>
+      <p style="word-break: keep-all; line-height: 1.5">
+        {{order.order.address}}
+      </p>
+      <hr style="border: solid 1px rgb(202, 25, 84)" />
+      <p
+        style="
+          margin-top: 40px;
+          font-size: larger;
+          font-weight: bold;
+          margin-bottom: 10px;
+        "
+      >
+        주문 목록
+      </p>
+      {% for menu in order.menus %}
+      <p style="float: right">{{menu.ea}}개&nbsp&nbsp&nbsp</p>
+      <p>{{menu.name}}</p>
+      {% endfor %}
+      <hr style="border: solid 1px rgb(202, 25, 84)" />
+      <p
+        style="
+          margin-top: 40px;
+          font-size: larger;
+          font-weight: bold;
+          margin-bottom: 10px;
+        "
+      >
+        결제
+      </p>
+      <p style="float: right">{{order.order.price}}원&nbsp&nbsp&nbsp</p>
+      <p>결제금액:</p>
+      <hr style="border: solid 1px rgb(202, 25, 84)" />
+      <p
+        style="
+          margin-top: 40px;
+          font-size: larger;
+          font-weight: bold;
+          margin-bottom: 10px;
+        "
+      >
+        주문 상태
+      </p>
+      {% if order.order.status === '0' %}
+      <button id="orderdelete" class="orderBtn">삭제</button>
+      <p style="line-height: 1.5">주문 취소</p>
+      {%elif order.order.status === '1' %}
+      <p style="line-height: 1.5">주문 요청</p>
+      {%elif order.order.status === '2' %}
+      <p style="line-height: 1.5">조리중</p>
+      {%elif order.order.status === '3' %}
+      <p style="line-height: 1.5">배달중</p>
+      {%elif order.order.status === '4' %}
+      <a
+        href="/review?store_id={{order.order.store_id}}&order_id={{order.order.order_id}}"
+        ><button id="review" class="orderBtn">리뷰 작성</button></a
+      >
+      <p style="line-height: 1.5">배달 완료</p>
+      {% endif %}
+      <hr style="border: solid 1px rgb(202, 25, 84); margin-top: 10px" />
+    </div>
+  </div>
+</div>
+<div>
+  <!-- <nav id="nav3">
+        <a href="/main"><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png" /></a>
+        <a><img src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png" /></a>
+        <a><img src="/images/text_snippet_FILL0_wght400_GRAD0_opsz48.png" /></a>
+        <a><img src="/images/person_FILL0_wght400_GRAD0_opsz48.png" /></a>
+    </nav> -->
+</div>
+
+{% endblock %} {% block script %}
+<script>
+  const orderDeleteBtn = document.getElementById('orderdelete');
+
+  orderDeleteBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    await axios.delete('/orders/{{order.order.order_id}}').then((res) => {
+      window.location.href = '/userOrders';
+    });
+  });
+</script>
+{%endblock%}

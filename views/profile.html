@@ -1,0 +1,108 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="profile-box">
+  <div id="top">
+    <a href="/main"><img id="home" src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+        style="width: 30px; height: 30px; float: right; margin-left: 250px" /></a>
+    <img src="/images/back.png" style="width: 20px; height: 20px; margin-top: 5px" onclick="window.history.back()" />
+  </div>
+  <div id="titleDiv">
+    <p style="font-size: 30px; font-weight: bold">프로필</p>
+  </div>
+  <div style="margin-top: 50px; margin-left: 20px">
+    <label for=""><span>이메일</span><input style="margin-left: 10px" type="text" value="{{user.account}}"
+        readonly /></label><br />
+    <label for=""><span>닉네임</span><input style="margin-left: 10px" id="nickname" type="text" value="{{user.nickname}}"
+        readonly /></label>
+    <button id="mdf-btn" style="margin-left: 10px">수정</button><br />
+    <label for=""><span>포인트</span><input style="margin-left: 10px" type="text" value="{{user.point}}"
+        readonly /></label><br />
+  </div>
+  <div style="margin-top: 50px; margin-left: 20px">
+    <a href="/myDibs"><button>찜</button></a>
+    <a href="/review/user"><button style="margin-top: 10px; margin-left: 50px">리뷰</button></a><br />
+    <button id="logout" style="margin-top: 10px">로그아웃</button>
+    <button id="delete" style="margin-top: 10px; margin-left: 10px">탈퇴</button><br />
+    <input id="pwd-check" type="password" style="display: none" placeholder="비밀번호" />
+    <button id="check-btn" style="display: none">확인</button>
+  </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+  modify();
+
+  $(document).on('click', '#delete', async function () {
+    $('#pwd-check').css('display', 'block');
+    $('#check-btn').css('display', 'block');
+  });
+
+  $(document).on('click', '#check-btn', async function () {
+    const password = $('#pwd-check').val();
+
+    const data = { password };
+
+    await axios
+      .delete('/user/delete', { data })
+      .then((response) => {
+        console.log(response);
+        alert(response.data.message);
+
+        window.location.href = '/main';
+      })
+      .catch((response) => {
+        alert(response.response.data.errorMessage);
+      });
+  });
+
+  let duplicationCheck = true;
+  function modify() {
+    const beforeNickname = $('#nickname').val();
+
+    $(document).on('click', '#mdf-btn', async function () {
+      if (duplicationCheck === true) {
+        $('#nickname').removeAttr('readonly');
+        $('#nickname').select();
+
+        $('#mdf-btn').text('등록');
+
+        duplicationCheck = false;
+      } else {
+        const nickname = $('#nickname').val();
+        const data = { nickname };
+
+        await axios
+          .put('/user/put', { nickname: nickname })
+          .then((response) => {
+            $('#mdf-btn').text('수정');
+            $('#nickname').attr('readonly', '');
+
+            duplicationCheck = true;
+
+            alert(response.data.message);
+          })
+          .catch((response) => {
+            $('#nickname').val(beforeNickname);
+            $('#mdf-btn').text('수정');
+            $('#nickname').attr('readonly', '');
+
+            duplicationCheck = true;
+
+            alert(response.response.data.errorMessage);
+          });
+      }
+    });
+
+    $(document).on('click', '#logout', async function () {
+      await axios
+        .post('/auth/logout')
+        .then((response) => {
+          alert(response.data.message);
+
+          window.location.href = '/main';
+        })
+        .catch((response) => {
+          alert(response.response.data.errorMessage);
+        });
+    });
+  }
+</script>
+{% endblock %}

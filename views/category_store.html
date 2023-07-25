@@ -1,0 +1,48 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="basket">
+  <a href="/usercarts" id="count_circle">!</a>
+</div>
+<div id="scroll_container2">
+  <div>
+    <div id="top">
+      <a href="/main"><img src="/images/back.png" style="width:20px; height:20px;" /></a>
+    </div>
+    <header style="height: 50px;">
+      <nav id="top_menu">
+        <ul>
+          <li><a href="/stores?category_id=1">전체</a></li>
+          <li><a href="/stores?category_id=2">치킨</a></li>
+          <li><a href="/stores?category_id=3">버거</a></li>
+          <li><a href="/stores?category_id=4">한식</a></li>
+          <li><a href="/stores?category_id=5">일식</a></li>
+          <li><a href="/stores?category_id=6">족발</a></li>
+          <li><a href="/stores?category_id=7">고기</a></li>
+        </ul>
+        <hr />
+      </nav>
+    </header>
+    <div id="store_category">
+      {% for store in stores %}
+      <div class="store_box">
+        <a href="/stores/detail?store_id={{store.store_id}}"><img src="/{{ store.img_url }}" alt="음식점 이미지" /></a>
+        <a href="/stores/detail?store_id={{store.store_id}}">
+          <p>{{store.name}}</p>
+          <div class="rating">
+            <img src="/images/Untitled-2.png" /><span>{{store.rating}}</span>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- <nav id="nav3">
+  <a href="/main"><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/text_snippet_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a><img src="/images/person_FILL0_wght400_GRAD0_opsz48.png" /></a>
+</nav> -->
+
+{% endblock %}
+
+<a href="/store"> </a>

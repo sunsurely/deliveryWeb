@@ -1,0 +1,45 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="scroll_container2">
+    <div>
+        <div id="top">
+            <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+                    style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+            <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;"
+                onclick="window.history.back()" />
+        </div>
+        <div id="titleDiv">
+            <p style="font-size: 30px; font-weight: bold;">나의 주문 내역</p>
+        </div>
+        <div style="margin-top: 30px; margin-left: 10px;">
+            {% if orders.length === 0 %}
+            <div style="text-align: center; padding-top: 170px;">
+                <p style="font-size: large;">텅~</p>
+            </div>
+            {% endif %}
+            {% for order in orders %}
+            <div class="order_box">
+                <a href="/orders/{{order.order_id}}">
+                    <p style="float: right; font-size: medium; font-weight: bold; padding-right: 20px;">
+                        {{order.price}}원</p>
+                    <p style="font-size: medium; font-weight: bold;">{{order.name}}</p>
+                    {%if order.status === '0' %}
+                    <p style="float: right; padding-right: 20px;">주문 취소</p>
+                    {%elif order.status === '1' %}
+                    <p style="float: right; padding-right: 20px;">주문 요청</p>
+                    {%elif order.status === '2' %}
+                    <p style="float: right; padding-right: 20px;">조리중</p>
+                    {%elif order.status === '3' %}
+                    <p style="float: right; padding-right: 20px;">배달중</p>
+                    {%elif order.status === '4' %}
+                    <p style="float: right; padding-right: 20px;">배달 완료</p>
+                    {% endif %}
+                    <p>주문 상태:</p>
+                </a>
+                <hr style="border: solid 1px rgb(202, 25, 84);">
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends 'layout.html' %} {% block content %}
+<div id="adminpages">
+  <div id="top">
+    <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;" onclick="window.location.href='/main'" />
+</div>
+  <div id="store">
+    <r class="storedesc" style="display: grid; grid-template-columns: 2fr 1fr 1fr; grid-gap: 10px; padding: 10px;
+    margin-right: 20px;"><label for="name" style="font-size: 20px; font-weight: bold;">{{store.store.name}}</label>
+      <a href="/getStoreUpdate"><button style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">수정</button></a>
+    <button class="storeDeleteBtn" style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">삭제</button></r>
+    {% for el in store.menu %}
+    <div id="menu">
+      <r class="{{el.menu_id}}" id="storedesc"><label for="name" style="font-size: 20px; font-weight: bold;">{{el.name}}</label>
+      <a href="/getMenuUpdate/{{el.menu_id}}"><button style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">수정</button></a>
+      <button class="menuDeleteBtn" style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">삭제</button></r>
+    </div>
+    {% endfor %}
+    <r><label for="point" style="font-size: 20px; font-weight: bold; margin-left: 25px; padding-top:10px;">보유한 포인트 : {{store.store.point}}</label></r>
+    <r style="display: grid; grid-template-columns: 1fr 1fr; grid-gap: 10px; padding: 10px; margin-right: 20px;">
+      <a href="/getStoreId"><button style="width:140px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">메뉴 등록하기</button></a>
+      <a href="/adminOrders/{{store.store.store_id}}"><button style="width:140px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">주문내역 조회하기</button></a></r>
+      <r style="margin-left:90px;">
+       <button id="logout" style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">logout</button>
+       <button id="delete" style="width:60px; height:25px; align-items: center; background: #212529; color: #fff; border-radius: 10px; cursor: pointer;">탈퇴</button
+        ><br />
+        <input
+          id="pwd-check"
+          type="password"
+          style="display: none"
+          placeholder="비밀번호"
+        />
+        <button id="check-btn" style="display: none">확인</button></r>
+    <!-- <div class="white-space"></div> -->
+  </div>
+</div>
+{%endblock%} {% block script %}
+<script>
+  const storeDeleteBtn = document.querySelector('.storeDeleteBtn');
+  storeDeleteBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+
+    axios.delete('/stores/{{store.store.store_id}}')
+    .then((res)=>{alert('가게삭제완료'); window.location.href = '/main'})
+  })
+   
+  
+    $('.menuDeleteBtn').each((idx,store)=>{
+      $(store).click(()=>{
+        const menu_id = $('#storedesc').attr('class');
+       axios.delete(`/stores/{{store.store.store_id}}/menu/${menu_id}`).then(()=>{
+        location.reload();
+       })    
+       
+      })
+    })
+
+$(document).on('click', '#logout', async function () {
+await axios
+.post('/auth/logout')
+.then((response) => {
+alert(response.data.message);
+
+window.location.href = '/main';
+})
+.catch((response) => {
+alert(response.response.data.errorMessage);
+});
+});
+
+$(document).on('click', '#delete', async function () {
+    $('#pwd-check').css('display', 'block');
+    $('#check-btn').css('display', 'block');
+  });
+
+  $(document).on('click', '#check-btn', async function () {
+    const password = $('#pwd-check').val();
+
+    const data = { password };
+
+    await axios
+      .delete('/user/delete', { data })
+      .then((response) => {
+        console.log(response);
+        alert(response.data.message);
+
+        window.location.href = '/main';
+      })
+      .catch((response) => {
+        alert(response.response.data.errorMessage);
+      });
+  });
+</script>
+{%endblock%}

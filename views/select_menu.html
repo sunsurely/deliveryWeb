@@ -1,0 +1,79 @@
+{%extends 'layout.html'%} {% block content %}
+<div id="choice_wrap">
+  <div id="top">
+    <a href="/main"><img id="home" src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+        style="width: 30px; height: 30px; float: right; margin-left: 250px" /></a>
+    <img src="/images/back.png" style="width: 20px; height: 20px; margin-top: 5px" onclick="window.history.back()" />
+  </div>
+  <div id="menu_detail_image"></div>
+  <div id="menu_wrap">
+    <p id="menu_detail_title">{{menu.name}}</p>
+    <p id="menu_detail_desc">{{menu.desc}}</p>
+    <p id="menu_detail_price">{{menu.price}}</p>
+    <p id="won">원</p>
+    <hr />
+    <div id="menu_detail_ea">
+      <p>수량</p>
+      <button id="sub">-</button>
+      <p id="ea_number">1</p>
+      <button id="add">+</button>
+    </div>
+  </div>
+
+  <div id="ea_info">
+    <p>총 주문금액</p>
+    <span id="total_price">{{menu.price}}원</span>
+  </div>
+  <div id="botton_bottom"><button id="input_basket">담기</button></div>
+</div>
+<!-- <nav id="nav6">
+  <a href="/"><img src="/images/home_FILL0_wght400_GRAD0_opsz48.png" /></a>
+  <a href="/myDibs"
+    ><img src="/images/favorite_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+  <a href="/userOrders"
+    ><img src="/images/text_snippet_FILL0_wght400_GRAD0_opsz48.png"
+  /></a>
+  <a href="/user"
+    ><img id="profile" src="/images/person_FILL0_wght400_GRAD0_opsz48.png"
+  /></a> -->
+</nav>
+{% block script %}
+<script>
+  let number = $('#ea_number').text();
+  let ea = parseInt(number);
+  let price = $('#menu_detail_price').text();
+  let totalPrice = parseInt(price);
+
+  $('#sub').click((e) => {
+    e.preventDefault();
+    if (ea < 1) {
+      alert('수량은 0보다 커야합니다.');
+      return;
+    }
+    ea--;
+    $('#ea_number').text(ea);
+    $('#total_price').text(totalPrice * ea + '원');
+
+    return;
+  });
+
+  $('#add').click((e) => {
+    e.preventDefault();
+    ea++;
+    $('#ea_number').text(ea);
+    $('#total_price').text(totalPrice * ea + '원');
+    return;
+  });
+
+  $('#input_basket').click(() => {
+    axios
+      .post(
+        `/carts?menu_id={{menu.menu_id}}&store_id={{menu.store_id}}&ea=${ea}`
+      )
+      .then(() => {
+        window.history.back();
+      });
+  });
+</script>
+{%endblock%} {% endblock %}

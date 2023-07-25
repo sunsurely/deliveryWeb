@@ -1,0 +1,50 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+  <div id="top">
+    <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+        style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+    <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;" onclick="window.history.back()" />
+  </div>
+  <div id="titleDiv" style="margin-top: 100px;">
+    <p style="font-size: 30px; font-weight: bold;">로그인</p>
+  </div>
+  <form style="margin-top: 150px; margin-left: 100px;">
+    <input id="account" , type="text" placeholder="이메일" /><br />
+    <input id="password" type="password" placeholder="비밀번호" /><br />
+    <button id="signin-btn">로그인</button><br />
+    <button id="signup-btn">회원가입</button>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).on('click', '#signin-btn', async function (e) {
+    e.preventDefault();
+
+    const account = $('#account').val();
+    const password = $('#password').val();
+    await axios({
+      method: 'POST',
+      url: '/auth/login',
+      data: {
+        account,
+        password,
+      },
+    })
+      .then((response) => {
+        alert('로그인 완료');
+
+        window.location.href = '/main';
+      })
+      .catch((response) => {
+        alert(response.response.data.reason.message);
+        console.log(response);
+      });
+  });
+
+  $(document).on('click', '#signup-btn', async function (e) {
+    e.preventDefault();
+
+    window.location.href = '/join';
+  });
+</script>
+{% endblock %}

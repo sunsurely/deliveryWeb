@@ -1,0 +1,65 @@
+{% extends 'layout.html' %} {% block content %}
+<!-- <div class="black-space"> -->
+  <div id="store">
+   
+      <r id="createdesc"><label>가게이름</label>
+        <input type="text" class="storeName" name="name" id="storeinput" placeholder="store name" /></r>
+      <r id="createdesc"><label>전화번호</label>
+        <input type="text" class="storeCall" name="call" id="storeinput" placeholder="call number" /></r>
+      <r id="createdesc"><label>카테고리</label>
+        <select name="category" class="category_id">
+          <option value="2">치킨</option>
+          <option value="3">버거</option>
+          <option value="4">한식</option>
+          <option value="5">족발</option>
+          <option value="6">고기</option>
+          <option value="7">분식</option>
+          <option value="8">샐러드</option>
+          <option value="9">일식</option>
+          <option value="10">죽</option>
+          <option value="11">중식</option>
+        </select></r>
+      <r id="createdesc"><label>가게주소</label>
+        <input type="text" name="address" class="storeAddress" id="storeinput" placeholder="address" /></r>
+      <r id="createdesc"><label>가게설명</label>
+        <input type="text" name="content" class="storeContent" id="storeinput" placeholder="content" /></r>
+      <r id="createdesc"><label>가게사진</label>
+        <input type="file" class="storeImg" name="img_url" id="img-url" /></r>
+      <r id="createdesc"><button  class="storeCreateBtn">수정하기</button></r>
+    
+  </div>
+</div>
+
+{%endblock%} {% block script %}
+<script>
+
+  const storeCreateBtn = document.querySelector('.storeCreateBtn');
+  
+  storeCreateBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const storeName = document.querySelector('.storeName').value;
+
+    const storeCall = document.querySelector('.storeCall').value;
+    
+    const categoryId= $('.category_id').val();
+
+    const storeAddress = document.querySelector('.storeAddress').value;
+   
+    const storeContent = document.querySelector('.storeContent').value;
+   
+    const storeImg = document.querySelector('#img-url').files[0];
+    
+    const formdata = new FormData();
+    formdata.append('name',storeName);
+    formdata.append('call',storeCall);
+    formdata.append('category_id',categoryId);
+    formdata.append('address',storeAddress);
+    formdata.append('content',storeContent);
+    formdata.append('img_url',storeImg);
+
+    await axios.put('/stores/{{store_id}}', formdata)
+    .then((res) => {alert('수정완료'); window.location.href = '/getStoreIdToPost'})
+  } 
+  )
+</script>
+{%endblock%}

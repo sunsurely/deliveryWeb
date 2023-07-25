@@ -1,0 +1,65 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+    <div id="top">
+        <a href="/main"><img id='home' src="/images/home_FILL0_wght400_GRAD0_opsz48.png"
+                style="width:30px; height:30px; float: right; margin-left: 250px;" /></a>
+        <img src="/images/back.png" style="width:20px; height:20px; margin-top: 5px;" onclick="window.history.back()" />
+    </div>
+    <div>
+        <div id="titleDiv">
+            <p style="font-size: 30px; font-weight: bold;">주문 하기</p>
+        </div>
+    </div>
+    <div style="margin-top: 50px; margin-left: 20px; margin-right: 20px;">
+        <div id="orderAdress">
+            <p style="font-weight: bold; margin-bottom: 20px;">주소</p>
+            <p style="word-break: keep-all; line-height: 1.5;">{{user.address}}</p>
+            <hr style="border: solid 1px rgb(202, 25, 84);">
+            <p style="font-weight: bold; margin-top: 30px; margin-bottom: 20px;">결제</p>
+            <p style="float: right;">{{user.point}}원 보유&nbsp&nbsp&nbsp</p>
+            <p>포인트: </p>
+            <p style="margin-top: 10px; color: rgb(202, 25, 84); float: right;">- {{price}}원&nbsp&nbsp&nbsp</p>
+            <p style="margin-top: 10px;">결제금액:</p>
+            <hr style="border: solid 1px rgb(15, 14, 15);">
+            <p style="float: right;">{{user.point - price}}원&nbsp&nbsp&nbsp</p>
+            <p>예상잔액: </p>
+            <hr style="border: solid 1px rgb(202, 25, 84);">
+            <p style="font-weight: bold; margin-top: 30px; margin-bottom: 20px;">요청 사항</p>
+            <input id='requestInput' type="text" placeholder="문앞에 두고 벨을 눌러주세요!"
+                style="  width: 18rem; border-radius: 20px; padding-left: 10px;" />
+        </div>
+    </div>
+</div>
+<div>
+    <nav id="nav5">
+        <p id="doOrder" style="font-size: 30px; font-weight: bold; margin-top: 10px; margin-bottom: 10px;">결제 하기
+        </p>
+    </nav>
+</div>
+{% endblock %} {% block script %}
+<script>
+    const doOrder = document.getElementById('doOrder');
+
+    doOrder.addEventListener('click', async (e) => {
+        e.preventDefault();
+
+        const addressId = "{{user.address_id}}"
+
+        const price = "{{price}}";
+
+        const request = document.getElementById('requestInput').value;
+
+        const data = {
+            address_id: addressId,
+            price: price,
+            request: request
+        }
+
+        await axios.post('/orders?store_id={{user.store_id}}', data)
+            .then((res) => {
+                window.location.href = "/orderComplete";
+            })
+    })
+
+</script>
+{%endblock%}

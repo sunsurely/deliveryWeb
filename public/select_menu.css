@@ -1,0 +1,155 @@
+#choice_wrap {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+#menu_detail_image {
+  margin-top: 70px;
+  width: 320;
+  height: 150px;
+  background: red;
+  z-index: -5;
+}
+#menu_wrap {
+  margin-top: 50px;
+}
+
+#menu_detail_title {
+  margin: 0 0 10px 20px;
+  font-weight: bold;
+  font-size: 20px;
+}
+#menu_detail_desc {
+  margin: 5px 0 10px 20px;
+  font-size: 15px;
+}
+
+#menu_detail_price {
+  display: inline;
+  margin: 5px 0 30px 25px;
+  font-size: 15px;
+  font-weight: bold;
+}
+#won {
+  display: inline;
+}
+
+#menu_wrap hr {
+  width: 315px;
+  margin: 20px 0 20px 15px;
+}
+
+#menu_detail_ea {
+  width: 320px;
+  margin: 5px 0 30px 25px;
+  font-size: 15px;
+  font-weight: bold;
+  display: grid;
+  grid-template-columns: 200px 20px 20px 20px;
+}
+
+#ea_number {
+  text-align: center;
+  line-height: 20px;
+}
+#add {
+  background: none;
+  border: 1px solid grey;
+  border-radius: 20px;
+  cursor: pointer;
+}
+#sub {
+  background: none;
+  border: 1px solid grey;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#ea_info {
+  width: 332px;
+  margin-left: 8px;
+  height: 70px;
+  background: #e0e0e0;
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+}
+#ea_info p {
+  margin-top: 20px;
+  margin-left: 15px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#ea_info span {
+  color: #ec0000;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 18px;
+}
+
+#botton_bottom {
+  width: 340px;
+  height: 50px;
+  border-top: 2px solid rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  margin-left: 5px;
+}
+#input_basket {
+  width: 300px;
+  padding: 7px;
+  margin-left: 23px;
+  margin-top: 25px;
+  background: #f72e11;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+
+#nav6 {
+  width: 320px;
+  height: 30px;
+  margin-top: 470px;
+  margin-left: 7px;
+  border-top: 1px solid rgba(0, 0, 0, 0.4);
+  border-bottom: 20px solid black;
+  border-radius: 7px;
+  padding: 8px;
+  display: grid;
+  z-index: 10;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  background: white;
+}
+
+#nav6 img {
+  margin-left: 24px;
+  width: 25px;
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+#nav6 img:hover {
+  opacity: 1;
+}
+
+#order_complet {
+  width: 300px;
+  heihgt: 50px;
+  padding: 7px;
+  margin-left: 23px;
+  margin-top: 25px;
+  background: #f72e11;
+  border: none;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+#choice_wrap2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}

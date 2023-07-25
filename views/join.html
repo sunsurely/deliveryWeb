@@ -1,0 +1,52 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+  <form>
+    <input id="account" , type="text" placeholder="이메일" /><br />
+    <input id="nickname" type="text" placeholder="닉네임" /><br />
+    <input id="phone" type="text" placeholder="전화번호" /><br />
+    <input id="password" type="password" placeholder="비밀번호" /><br />
+    <input id="confirm" type="password" placeholder="비밀번호 확인" /><br />
+    <label for=""
+      ><input type="radio" name="status" value="normal" />사용자</label
+    >
+    <label for=""
+      ><input type="radio" name="status" value="admin" />사장님</label
+    ><br />
+    <a href="/auth/join"><button id="join-btn">회원가입</button></a>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  $(document).on('click', '#join-btn', async function (e) {
+    e.preventDefault();
+
+    const account = $('#account').val();
+    const nickname = $('#nickname').val();
+    const phone = $('#phone').val();
+    const password = $('#password').val();
+    const confirm = $('#confirm').val();
+    const status = $('input[type=radio][name=status]:checked').val();
+
+    await axios({
+      method: 'POST',
+      url: '/auth/join',
+      data: {
+        account,
+        nickname,
+        phone,
+        password,
+        confirm,
+        status,
+      },
+    })
+      .then(() => {
+        alert('회원가입 완료');
+        window.location.href = '/signin';
+      })
+      .catch((response) => {
+        console.log(response.response.data.errorMessage);
+        alert(response.response.data.errorMessage);
+      });
+  });
+</script>
+{% endblock %}
